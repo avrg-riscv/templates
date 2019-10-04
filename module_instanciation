@@ -1,0 +1,43 @@
+// explanation of why instanciating the below module
+// note the use of the double "/" and not "/* */" multi line style comment
+//    module<space>#(
+//    4<spaces> before ports and params
+//    )<space>module_name_inst<space>
+// parenthesis are aligned by ports xor by parameters by the following way:
+// the left parenthesis is aligned one space after the longest port/param name
+// the right parenthesis is aligned one space after the longest signal in a
+// port
+// Ports and parameters can have sections:
+// <a line space>
+// 4<spaces>CAPITAL LETTERS NAME SECTION
+module #(
+    .SMALL_PARAM          ( dd             ),  // why dd, 2 space "  " 1 space
+    .SUPER_BIG_NAME_PARAM ( big_value_name )
+) module_inst (
+
+    // SYSTEM
+    .clk         ( clk       ),
+    .rst_n       (           ),
+
+    // A SUBSET OF PORTS
+    .axi_valid_i ( t         ),  // comment, again: 2<spaces>"//"1<space>
+    .axi_valid_o ( daadadada ),
+
+    // AN OTHER SUBSET OF PORTS
+    .data_ctrl_o ( t_k       ),
+    .debug_i     ( sss       )
+
+);
+
+EXAMPLE :
+
+// sticky shifter to compute the guard bit of the mantissa
+// aligned fraction is +3 (GRS) + 1(hidden bit) bits
+sticky_shifter #(
+    .DATA_WIDTH ( fraction_width_b+1   ),  // one more bit for hidden bit
+    .MAX_STAGES ( 2**(scale_width_b)-1 )   // signed exponent
+) sticky_shifter_inst (
+    .a_i ( {~szero, sop_fraction}   ),  // mantissa with hidden bit
+    .b_i ( shift_amount             ),  // the difference of scales
+    .c_o ( sop_fraction_aligned_grs )   // the shifted mantissa with GRS triplet
+);
